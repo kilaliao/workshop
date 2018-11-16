@@ -10,7 +10,7 @@ deploy:
     secure: $AWS_SECRET_KEY_DEV
   local_dir: dpl_cd_upload
   skip_cleanup: true
-  region: us-east-1
+  region: ap-northeast-1
   on:
     branch: master
   bucket: hrm-java-test
@@ -21,6 +21,6 @@ deploy:
   key: workshop-${TRAVIS_BUILD_NUMBER}.zip
   application: cd-104pro-cxf
   deployment_group: cd-104pro-cxf
-  region: us-east-1
+  region: ap-northeast-1
   on:
     branch: master
