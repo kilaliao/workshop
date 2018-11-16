@@ -1,26 +1,31 @@
 language: bash
 before_deploy:
-  - zip -r latest *
+  - zip -rq cxf-${TRAVIS_BUILD_NUMBER} .
+  - echo "Zip source files to release"
   - test -d dpl_cd_upload || mkdir dpl_cd_upload
-  - mv latest.zip dpl_cd_upload/workshop-${TRAVIS_BUILD_NUMBER}.zip
+  - mv cxf-${TRAVIS_BUILD_NUMBER}.zip dpl_cd_upload/cxf-${TRAVIS_BUILD_NUMBER}.zip
+  - echo "Move zipped file to upload folder"
 deploy:
-- provider: s3
-  access_key_id: $AWS_ACCESS_KEY_DEV
-  secret_access_key: 
-    secure: $AWS_SECRET_KEY_DEV
-  local_dir: dpl_cd_upload
-  skip_cleanup: true
-  region: ap-northeast-1
-  on:
-    branch: master
-  bucket: hrm-java-test
-- provider: codedeploy
-  access_key_id: $AWS_ACCESS_KEY_DEV
-  secret_access_key: $AWS_SECRET_KEY_DEV
-  bucket: hrm-java-test
-  key: workshop-${TRAVIS_BUILD_NUMBER}.zip
-  application: cd-104pro-cxf
-  deployment_group: cd-104pro-cxf
-  region: ap-northeast-1
-  on:
-    branch: master
+# dev
+  - provider: s3
+    detect_encoding: true
+    access_key_id: $AWS_ACCESS_KEY_DEV
+    secret_access_key: $AWS_SECRET_KEY_DEV
+    local_dir: dpl_cd_upload
+    skip_cleanup: true
+    region: ap-northeast-1
+    bucket: hrm-java-test
+    on:
+      branch: lab
+  - provider: codedeploy
+    access_key_id: $AWS_ACCESS_KEY_DEV
+    secret_access_key: $AWS_SECRET_KEY_DEV
+    region: ap-northeast-1
+    bucket: hrm-java-test
+    key: cxf-${TRAVIS_BUILD_NUMBER}.zip
+    bundle_type: zip
+    application: cd-104pro-cxf
+    deployment_group: cd-104pro-cxf
+    wait-until-deployed: true
+    on:
+      branch: lab
