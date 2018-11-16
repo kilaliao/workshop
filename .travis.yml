@@ -17,10 +17,10 @@ deploy:
 - provider: codedeploy
   access_key_id: $AWS_ACCESS_KEY
   secret_access_key: $AWS_SECRET_ACCESS_KEY
-  bucket: workshop-level400-s3-kilaliao
+  bucket: hrm-java-test
   key: workshop-${TRAVIS_BUILD_NUMBER}.zip
-  application: workshop-cicd
-  deployment_group: master
+  application: cd-104pro-cxf
+  deployment_group: cd-104pro-cxf
   region: us-east-1
   on:
     branch: master
